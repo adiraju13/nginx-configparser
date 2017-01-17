@@ -50,10 +50,6 @@ std::string NginxConfigStatement::ToString(int depth) {
   return serialized_statement;
 }
 
-NginxConfigParser::NginxConfigParser()
-{
-  num_unmatched_open_braces = 0;
-}
 const char* NginxConfigParser::TokenTypeAsString(TokenType type) {
   switch (type) {
     case TOKEN_TYPE_START:         return "TOKEN_TYPE_START";
@@ -152,6 +148,7 @@ NginxConfigParser::TokenType NginxConfigParser::ParseToken(std::istream* input,
 }
 
 bool NginxConfigParser::Parse(std::istream* config_file, NginxConfig* config) {
+  int num_unmatched_open_braces = 0;
   std::stack<NginxConfig*> config_stack;
   config_stack.push(config);
   TokenType last_token_type = TOKEN_TYPE_START;
@@ -209,7 +206,6 @@ bool NginxConfigParser::Parse(std::istream* config_file, NginxConfig* config) {
       if ((last_token_type != TOKEN_TYPE_STATEMENT_END && last_token_type != TOKEN_TYPE_END_BLOCK) 
         || num_unmatched_open_braces <= 0) {
         // Error.
-        printf("error found\n");
         break;
       }
       config_stack.pop();

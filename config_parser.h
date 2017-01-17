@@ -25,7 +25,7 @@ class NginxConfig {
 // The driver that parses a config file and generates an NginxConfig.
 class NginxConfigParser {
  public:
-  NginxConfigParser();
+  NginxConfigParser(){}
 
   // Take a opened config file or file name (respectively) and store the
   // parsed config in the provided NginxConfig out-param.  Returns true
@@ -45,8 +45,6 @@ class NginxConfigParser {
     TOKEN_TYPE_ERROR = 7
   };
   const char* TokenTypeAsString(TokenType type);
-
-  int num_unmatched_open_braces;
 
   enum TokenParserState {
     TOKEN_STATE_INITIAL_WHITESPACE = 0,
